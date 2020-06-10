@@ -8,29 +8,55 @@ module MsdOdata
       }
     end
 
+    ##
+    # Creates a resource
+    # POST request to 'base_url/data/EntityNames'
+    #
+    # @return [response]
     def create
-      @options[:body] = @entity.attrs[:body]
+      @options[:body] = @entity.attrs
+      @options[:headers]['Content-Type'] = 'application/json'
       url = @url_helper.entity_collection_url
       request(:post, url)
     end
 
+    ##
+    # Queries a resource
+    # GET request to 'base_url/data/EntityNames'
+    #
+    # @return [response]
     def read
       url = @url_helper.entity_collection_url
       request(:get, url)
     end
 
+    ##
+    # Updates a resource
+    # PATCH request to 'base_url/data/EntityNames(url_params)'
+    #
+    # @return [response]
     def update
       @options[:body] = @entity.attrs[:body]
+      @options[:headers]['Content-Type'] = 'application/json'
       url = @url_helper.entity_url
       request(:patch, url)
     end
 
+    ##
+    # Deletes a resource
+    # DELETE request to 'base_url/data/EntityNames(url_params)'
+    #
+    # @return [response]
     def delete
-      @options[:body] = @entity.attrs[:body]
       url = @url_helper.entity_url
       request(:delete, url)
     end
 
+    ##
+    # Finds an entity of a resource
+    # GET request to 'base_url/data/EntityNames(url_params)'
+    #
+    # @return [response]
     def find_entity
       url = @url_helper.entity_url
       request(:get, url)
