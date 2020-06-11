@@ -2,7 +2,7 @@ module MsdOdata
   class Entity
     ##
     # This class behaves as an entity model.
-    # And takes the entity name in plural and capitalized format as 'name' attribute, and 'attrs' to pass payload or options.
+    # And takes the entity name in plural and capitalized format as 'name' attribute, and 'attrs' to pass a payload or options.
     # Entity name should be the same as in the URI.
     # ex: {{base_url}}/Customers
     #     MsdOdata::Entity.new('Customers')
@@ -44,14 +44,14 @@ module MsdOdata
     end
 
     # Sets a number of records to skip before retrieving records in a collection.
-    # @param properties [Array<Symbol>]
+    # @param value [to_i]
     # @return [self]
-    def skip(*props)
-      @query[:skip] = props.join(',')
+    def skip(val)
+      @query[:skip] = val.to_i
       self
     end
 
-    # Adds limit criteria to query.
+    # Adds limit number of records to query.
     # @param value [to_i]
     # @return [self]
     def limit(value)
@@ -59,12 +59,14 @@ module MsdOdata
       self
     end
 
-    # Adds a filter to the query.
+    # Adds expressions to query.
     #
     # For example:
     #   AccountId eq 'HS-112233'
     #
-    # Usage example: entity.where(entity[:AccountId].eq('ID-12345'))
+    # Usage examples:
+    #     entity.where(entity[:AccountId].eq('ID-12345'))
+    #     entity.where.not(entity[:title].eq('Staff Manager'))
     #
     # Operators:
     # eq, ne, gt, ge, lt, le, and, or, not
@@ -73,6 +75,7 @@ module MsdOdata
     # @return [self]
     def where(*exps)
       joined_exps = exps.join(' and ')
+      return self if joined_exps.empty?
 
       if @query[:filters].nil?
         @query[:filters] = joined_exps
@@ -86,7 +89,8 @@ module MsdOdata
     # Adds the logical operator 'or' to the query and start another chain.
     #
     # Usage example:
-    #   entity.where(entity[:Type].eq('customer')).or(entity[:Id].eq('HS-XXXX'))
+    #   entity.where(exp).or(exp)
+    #   entity.where(exp).or.not(exp)
     #
     # @param expressions [Array<String>]
     # @return [self]
@@ -106,12 +110,23 @@ module MsdOdata
     end
 
     # Adds the logical operator 'not' to the query.
-    # This should be only used within 'and' or 'or' operators.
+    # This should be only used after 'and' or 'or' operators.
     #
-    # Usage example:
+    # Usage example: entity.where(exp).and.not(exp)
+    # This operator wraps the expressions before it & after it in parentheses.
+    #   => (expressions) and not (expressions)
+    #
+    # @param expressions [Array<String>]
+    # @return [self]
     def not(*exps)
       joined_exps = exps.join(' and ')
-      @query[:filters] += " not #{joined_exps}"
+
+      if @query[:filters].nil?
+        @query[:filters] = "not (#{joined_exps})"
+      else
+        @query[:filters] = "(#{@query[:filters]}) and not (#{joined_exps})"
+      end
+
       self
     end
 
@@ -172,7 +187,7 @@ module MsdOdata
     private
 
     # Builds the expression as a string statement.
-    # Note: Single qoutes on the value if it's a String or Symbol
+    # Note: Single qoutes must be around the value if it's a String or Symbol
     # Example: "Attribute eq 'value'"
     def expression(operator, val)
       val = (val.is_a?(String) || val.is_a?(Symbol)) ? "'#{val}'" : val
