@@ -76,7 +76,7 @@ describe 'MsdOdata::Service' do
     end
   end
 
-  describe '.find_entity' do
+  describe '.find' do
     it 'finds an entity' do
       attrs = {
         url_params: { 'CustomerAccount' => 12 },
@@ -90,7 +90,7 @@ describe 'MsdOdata::Service' do
 
       expect_any_instance_of(MsdOdata::Client).to receive(:request).with(:get, expected_options)
 
-      service.find_entity
+      service.find
     end
   end
 end

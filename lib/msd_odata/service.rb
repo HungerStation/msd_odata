@@ -57,7 +57,7 @@ module MsdOdata
     # GET request to 'base_url/data/EntityNames(url_params)'
     #
     # @return [response]
-    def find_entity
+    def find
       url = @url_helper.entity_url
       request(:get, url)
     end
