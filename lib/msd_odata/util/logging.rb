@@ -4,7 +4,7 @@ module MsdOdata
   module Util
     module Logging
       def log(msg)
-        logger = Logger.new('logfile.log')
+        logger = Logger.new($stdout)
         logger.info(msg)
       end
     end
