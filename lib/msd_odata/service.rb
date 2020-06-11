@@ -2,7 +2,7 @@ module MsdOdata
   class Service
     def initialize(token, base_url, entity)
       @entity = entity
-      @url_helper = UrlHelper.new(base_url, entity)
+      @url_helper = Util::UrlHelper.new(base_url, entity)
       @options = {
         headers: { 'Authorization': token },
       }
