@@ -26,7 +26,7 @@ module MsdOdata
                       end
                     end 
       end
-      response = { status: json_format(resp.env.status.to_s), response_body: json_format(resp.env.response_body) }
+      response = { status: json_format(resp.env.status.to_s), response_body: json_format(resp.env.response.body) }
 
       log '------CLIENT: MSD API RESPONSE------'
       log "RESPONSE CODE => #{response[:status]}"

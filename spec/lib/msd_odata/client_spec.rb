@@ -1,7 +1,8 @@
 require 'spec_helper'
+
 describe 'MsdOdata::Client' do
   describe 'External request' do
-    it 'queries FactoryGirl contributors on GitHub' do
+    it 'queries available requests from MSD' do
       stub_http_request(:get, "https://hs-devdevaos.sandbox.ax.dynamics.com/data/").
       with(
         headers: {
