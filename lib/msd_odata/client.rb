@@ -24,15 +24,16 @@ module MsdOdata
                       else
                         options[:body]
                       end
-                    end 
+                    end
       end
-      response = { status: json_format(resp.env.status.to_s), response_body: json_format(resp.env.response.body) }
+      status = json_format(resp.env.status.to_s)
+      response = json_format(resp.env.response.body)
 
       log '------CLIENT: MSD API RESPONSE------'
-      log "RESPONSE CODE => #{response[:status]}"
-      log "RESPONSE BODY => #{response[:response_body]}"
+      log "RESPONSE CODE => #{status}"
+      log "RESPONSE BODY => #{response}"
 
-      response
+      [status, response]
     end
 
     private
