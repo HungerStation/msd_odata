@@ -1,6 +1,6 @@
 # MsdOdata
 
-Ruby gem for accessing Microsoft Dynamics CRM 2015 via their ODATA protocol
+Ruby gem for accessing Microsoft Dynamics AX via their ODATA protocol
 
 For more info, check Microsoft Odata [Documentation](https://docs.microsoft.com/en-us/previous-versions/dynamicscrm-2015/developers-guide/gg334767(v=crm.7))
 
