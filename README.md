@@ -45,6 +45,29 @@ Note: Before using the retrieved access token in further requests you will need 
 ```ruby
 token = "Bearer MjktNDc2MC05NDdlLTljYmYyMjMzNjdhNiIsInJvbGVz..."
 ```
+
+## CRUD actions
+Before making any CRUD action you will need a `token` from the previous step, and a `base_url` which is called `resource` in MSD credentials.
+
+### Create a resource
+```ruby
+# Payload attributes.
+attrs = {
+  "OrderingCustomerAccountNumber" => '1',
+  "InvoiceType" => "Invoice"
+}
+
+# Creating entity object, you can pass any entity name as the first argument.
+entity = MsdOdata::Entity.new(:SalesOrderHeaders, attrs)
+
+# Creating service object.
+service = MsdOdata::Service.new(token, base_url, entity)
+
+# POST request to base_url/data/SalesOrderHeaders with the payload you provided.
+response = service.create
+# => {:status=>201, :response_body=>{"@odata.context"=>"https://xxxxx.sandbox.ax.dynamics.com/data/$metadata#SalesOrderHeaders/$entity", "@odata.etag"=>"W/\"TQ4MjAwMzxOTUyMTQ4MDswLD....\"", "dataAreaId"=>"usmf", "SalesOrderNumber"=>"001357", "SalesUnitId"=>"", "OrderTotalTaxAmount"=>0, "AreTotalsCalculated"=>"No"........ }}
+```
+
 ## Logger
 
 By default, logging is enabled and directed at STDOUT.
