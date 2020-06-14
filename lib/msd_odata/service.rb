@@ -26,7 +26,7 @@ module MsdOdata
     #
     # @return [response]
     def read
-      url = @url_helper.entity_collection_url
+      url = @url_helper.entity_collection_url(with_query: true)
       request(:get, url)
     end
 
