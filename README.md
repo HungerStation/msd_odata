@@ -2,7 +2,7 @@
 
 Ruby gem for accessing Microsoft Dynamics AX via their ODATA protocol
 
-For more info, check Microsoft Odata [Documentation](https://docs.microsoft.com/en-us/previous-versions/dynamicscrm-2015/developers-guide/gg334767(v=crm.7))
+For more info, check Microsoft Odata [Documentation](https://docs.microsoft.com/en-us/dynamics365/fin-ops-core/dev-itpro/data-entities/odata)
 
 ## Installation
 
