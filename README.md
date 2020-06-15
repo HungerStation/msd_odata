@@ -54,7 +54,7 @@ Before making any CRUD action you will need a `token` from the previous step, an
 # Payload attributes.
 attrs = {
   "OrderingCustomerAccountNumber" => '1',
-  "InvoiceType" => "Invoice"
+  "InvoiceType" => "Invoice",
 }
 
 # Creating entity object, you can pass any entity name as the first argument.
@@ -64,7 +64,7 @@ entity = MsdOdata::Entity.new(:SalesOrderHeaders, attrs)
 service = MsdOdata::Service.new(token, base_url, entity)
 
 # POST request to base_url/data/SalesOrderHeaders with the payload you provided.
-response = service.create
+service.create
 # => {:status=>201, :response_body=>{"@odata.context"=>"https://xxxxx.sandbox.ax.dynamics.com/data/$metadata#SalesOrderHeaders/$entity", "@odata.etag"=>"W/\"TQ4MjAwMzxOTUyMTQ4MDswLD....\"", "dataAreaId"=>"usmf", "SalesOrderNumber"=>"001357", "SalesUnitId"=>"", "OrderTotalTaxAmount"=>0, "AreTotalsCalculated"=>"No"........ }}
 ```
 
@@ -74,7 +74,7 @@ attrs = {
   # URL params to build the url.
   url_params: {
     "dataAreaId" => "usmf",
-    "CustomerAccount" => "DE-001"
+    "CustomerAccount" => "DE-001",
   }
 }
 
@@ -90,12 +90,12 @@ service.find
 ```ruby
 attrs = {
   # URL params to build the url.
-  "url_params" => {
+  url_params: {
     "dataAreaId" => "usmf",
     "CustomerAccount" => "DE-001",
   },
   # Request payload. (attributes to be updated)
-  "body" => {
+  body: {
     "Name" => "Hb New Brand",
   }
 }
@@ -112,7 +112,7 @@ service.update
 ```ruby
 attrs = {
   # URL params to build the url.
-  "url_params" => {
+  url_params: {
     "dataAreaId" => "usmf",
     "InventoryLotId" => "013247",
   }
@@ -130,7 +130,7 @@ service.delete
 To query a resource you will use `entity` class methods that will help you to build a query based on [OData system query options](https://msdn.microsoft.com/en-us/library/gg309461.aspx).
 
 #### Query operators
-Supported operators are: eq, ne, gt, ge, lt, le, and, or, not.
+Supported operators are: `eq`, `ne`, `gt`, `ge`, `lt`, `le`, `and`, `or`, `not`.
 ```ruby
 entity = MsdOdata::Entity.new(:Customers)
 entity.where(entity['PartyType'].eq('Organization')) # => PartyType equal 'Organization'
@@ -140,10 +140,12 @@ entity.where(entity['CreditLimit'].gt(10000)) # => CreditLimit greater than 10,0
 entity.where("PartyType eq 'Organization'", 'CreditLimit gt 10000')
 ```
 
-You can use 'not', 'or', 'and' operators like:
+You can use `not`, `or`, `and` operators like:
 ```ruby
 entity.where.not(exp) # not (expression)
+
 entity.where(exp).not(exp) # (exp1) and not (exp2)
+
 entity.where(exp).or(exp).and(exp) # exp1 or exp2 and exp3
 ```
 
@@ -151,22 +153,26 @@ entity.where(exp).or(exp).and(exp) # exp1 or exp2 and exp3
 ```ruby
 entity = MsdOdata::Entity.new(:AccountSet)
 
-# Select what fields to retrieve
+# Select what fields to retrieve.
 entity.select('CustomerAccount', 'Name')
 
-# Fetch a related resource to the entity
+# Fetch a related resource to the entity.
 entity.expand('opportunity_customer_accounts')
 
-# Limit the result set to a specific number of records
+# Limit the result set to a specific number of records.
 entity.limit(20)
 
 # Order the result set by a field or multiple fields.
 entity.order_by('CustomerAccount')
 
-# Skip a number of records in the result set
+# Skip a number of records in the result set.
 entity.skip(100)
 ```
-
+And finally when you finish building the query, pass the `entity` object to a `service` object, and call `read` action.
+```ruby
+service = MsdOdata::Service.new(token, base_url, entity)
+response = service.read
+```
 ## Logger
 
 By default, logging is enabled and directed at STDOUT.
