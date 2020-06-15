@@ -49,7 +49,7 @@ token = "Bearer MjktNDc2MC05NDdlLTljYmYyMjMzNjdhNiIsInJvbGVz..."
 ## CRUD actions
 Before making any CRUD action you will need a `token` from the previous step, and a `base_url` which is called `resource` in MSD credentials.
 
-### Create a resource
+### Create an entity
 ```ruby
 # Payload attributes.
 attrs = {
@@ -68,7 +68,25 @@ response = service.create
 # => {:status=>201, :response_body=>{"@odata.context"=>"https://xxxxx.sandbox.ax.dynamics.com/data/$metadata#SalesOrderHeaders/$entity", "@odata.etag"=>"W/\"TQ4MjAwMzxOTUyMTQ4MDswLD....\"", "dataAreaId"=>"usmf", "SalesOrderNumber"=>"001357", "SalesUnitId"=>"", "OrderTotalTaxAmount"=>0, "AreTotalsCalculated"=>"No"........ }}
 ```
 
-### Update a resource
+### Find an entity
+```ruby
+attrs = {
+  # URL params to build the url.
+  url_params: {
+    "dataAreaId" => "usmf",
+    "CustomerAccount" => "DE-001"
+  }
+}
+
+entity = MsdOdata::Entity.new(:Customers, attrs)
+service = MsdOdata::Service.new(token, base_url, entity)
+
+# GET request to base_url/data/SalesOrderLines(dataAreaId='usmf',CustomerAccount='DE-001')
+service.find
+# => {:status=>200, :response_body=>{"@odata.context"=>"https://xxxx.sandbox.ax.dynamics.com/data/$metadata#Customers/$entity", "@odata.etag"=>"W/\"Jdw...==\"", "dataAreaId"=>"usmf", "CustomerAccount"=>"DE-001", "AddressBrazilianCNPJOrCPF"=>"", "PartyType"=>"Organization", "PrimaryContactFaxExtension"=>"", "IsFuelSurchargeApplied"=>"No", "SalesTaxGroup"=>"EXMPT FOR", "AddressCountryRegionId"=>"DEU", "ContactPersonId"=>"", "CustomerPaymentFineCode"=>"", "BirthCountyCode"=>"", "InvoiceAddress"=>"InvoiceAccount", "PackingMaterialFeeLicenseNumber"=>"", "TransactionPresenceType"=>"DoesNotApply", "PrimaryContactEmailIsIM"=>"No", "PrimaryContactTwitter"=>"", "InvoiceAddressCity"=>"Berlin"...........}}```
+```
+
+### Update an entity
 ```ruby
 attrs = {
   # URL params to build the url.
@@ -90,7 +108,7 @@ service.update
 # => {:status=>204, :response_body=>false}
 ```
 
-### Delete a resource
+### Delete an entity
 ```ruby
 attrs = {
   # URL params to build the url.
