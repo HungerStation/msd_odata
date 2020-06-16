@@ -46,10 +46,10 @@ Note: Before using the retrieved access token in further requests you will need 
 token = "Bearer MjktNDc2MC05NDdlLTljYmYyMjMzNjdhNiIsInJvbGVz..."
 ```
 
-## CRUD actions
+### CRUD actions
 Before making any CRUD action you will need a `token` from the previous step, and a `base_url` which is called `resource` in MSD credentials.
 
-### Create an entity
+#### Create an entity
 ```ruby
 # Payload attributes.
 attrs = {
@@ -68,7 +68,7 @@ service.create
 # => {:status=>201, :response_body=>{"@odata.context"=>"https://xxxxx.sandbox.ax.dynamics.com/data/$metadata#SalesOrderHeaders/$entity", "@odata.etag"=>"W/\"TQ4MjAwMzxOTUyMTQ4MDswLD....\"", "dataAreaId"=>"usmf", "SalesOrderNumber"=>"001357", "SalesUnitId"=>"", "OrderTotalTaxAmount"=>0, "AreTotalsCalculated"=>"No"........ }}
 ```
 
-### Find an entity
+#### Find an entity
 ```ruby
 attrs = {
   # URL params to build the url.
@@ -86,7 +86,7 @@ service.find
 # => {:status=>200, :response_body=>{"@odata.context"=>"https://xxxx.sandbox.ax.dynamics.com/data/$metadata#Customers/$entity", "@odata.etag"=>"W/\"Jdw...==\"", "dataAreaId"=>"usmf", "CustomerAccount"=>"DE-001", "AddressBrazilianCNPJOrCPF"=>"", "PartyType"=>"Organization", "PrimaryContactFaxExtension"=>"", "IsFuelSurchargeApplied"=>"No", "SalesTaxGroup"=>"EXMPT FOR", "AddressCountryRegionId"=>"DEU", "ContactPersonId"=>"", "CustomerPaymentFineCode"=>"", "BirthCountyCode"=>"", "InvoiceAddress"=>"InvoiceAccount", "PackingMaterialFeeLicenseNumber"=>"", "TransactionPresenceType"=>"DoesNotApply", "PrimaryContactEmailIsIM"=>"No", "PrimaryContactTwitter"=>"", "InvoiceAddressCity"=>"Berlin"...........}}```
 ```
 
-### Update an entity
+#### Update an entity
 ```ruby
 attrs = {
   # URL params to build the url.
@@ -108,7 +108,7 @@ service.update
 # => {:status=>204, :response_body=>false}
 ```
 
-### Delete an entity
+#### Delete an entity
 ```ruby
 attrs = {
   # URL params to build the url.
@@ -126,10 +126,10 @@ service.delete
 # => {:status=>204, :response_body=>false}
 ```
 
-### Query a resource
+#### Query a resource
 To query a resource you will use `entity` class methods that will help you to build a query based on [OData system query options](https://msdn.microsoft.com/en-us/library/gg309461.aspx).
 
-#### Query operators
+##### Query operators
 Supported operators are: `eq`, `ne`, `gt`, `ge`, `lt`, `le`, `and`, `or`, `not`.
 ```ruby
 entity = MsdOdata::Entity.new(:Customers)
@@ -149,7 +149,7 @@ entity.where(exp).not(exp) # (exp1) and not (exp2)
 entity.where(exp).or(exp).and(exp) # exp1 or exp2 and exp3
 ```
 
-#### Other query options
+##### Other query options
 ```ruby
 entity = MsdOdata::Entity.new(:AccountSet)
 
