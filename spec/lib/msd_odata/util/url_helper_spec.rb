@@ -29,7 +29,7 @@ describe 'MsdOdata::Util::UrlHelper' do
       base_url = 'google.com'
       url_helper = MsdOdata::Util::UrlHelper.new(base_url, entity)
 
-      expected_url = "google.com/data/Invoices?"
+      expected_url = "google.com/data/Invoices"
       actual_url = url_helper.entity_collection_url(with_query: true)
       expect(actual_url).to eq(expected_url)
     end
@@ -44,6 +44,17 @@ describe 'MsdOdata::Util::UrlHelper' do
       expected_url = "github.com/data/Customers(CustomerId='HS-120')"
 
       expect(url_helper.entity_url).to eq(expected_url)
+    end
+
+    it 'builds url for entity with custom query param' do
+      entity = MsdOdata::Entity.new('Customers', { url_params: { 'CustomerAccount' => '10' } })
+      entity.custom_param('cross-company=true')
+      base_url = 'github.com'
+      url_helper = MsdOdata::Util::UrlHelper.new(base_url, entity)
+
+      expected_url = "github.com/data/Customers(CustomerAccount='10')?cross-company=true&"
+
+      expect(url_helper.entity_url).to eql(expected_url)
     end
   end
 

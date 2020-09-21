@@ -10,13 +10,13 @@ module MsdOdata
         url = "#{@base_url}/data/#{@entity.name}"
 
         return url unless with_query
-        url + build_query
+        "#{url}#{build_query}"
       end
 
       def entity_url
         raise "'url_params' are missing." unless @entity.attrs[:url_params].is_a?(Hash)
 
-        "#{entity_collection_url}(#{build_url_params})"
+        "#{entity_collection_url}(#{build_url_params})#{build_query}"
       end
 
       private
@@ -25,12 +25,14 @@ module MsdOdata
       def build_query
         query = '?'
         query_hash = @entity.query
+        return if query_hash.empty?
         query += "$select=#{query_hash[:select]}&" unless query_hash[:select].nil?
         query += "$filter=#{query_hash[:filters]}&" unless query_hash[:filters].nil?
         query += "$orderby=#{query_hash[:order_by]}&" unless query_hash[:order_by].nil?
         query += "$top=#{query_hash[:top]}&" unless query_hash[:top].nil?
         query += "$expand=#{query_hash[:expand]}&" unless query_hash[:expand].nil?
         query += "$skip=#{query_hash[:skip]}&" unless query_hash[:skip].nil?
+        query += "#{query_hash[:custom_param]}&" unless query_hash[:custom_param].nil?
         query
       end
 

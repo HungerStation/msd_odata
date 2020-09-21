@@ -59,6 +59,14 @@ module MsdOdata
       self
     end
 
+    # Adds a custom parameter to the url
+    # @param query_str [String]
+    # @return [self]
+    def custom_param(query_str)
+      @query[:custom_param] = query_str
+      self
+    end
+
     # Adds expressions to query.
     #
     # For example:
