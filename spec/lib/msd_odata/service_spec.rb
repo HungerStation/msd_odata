@@ -41,7 +41,7 @@ describe 'MsdOdata::Service' do
 
     it 'reads from a resource' do
       service = MsdOdata::Service.new(@token, @base_url, @entity)
-      expected_url = 'base_url.com/data/Customers?'
+      expected_url = 'base_url.com/data/Customers'
       actual_url = MsdOdata::Util::UrlHelper.new(@base_url, @entity).entity_collection_url(with_query: true)
 
       expect_any_instance_of(MsdOdata::Client).to receive(:request).with(:get, @expected_options)

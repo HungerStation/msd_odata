@@ -71,6 +71,15 @@ describe 'MsdOdata::Entity' do
     end
   end
 
+  describe '.custom_param' do
+    before(:each) { @entity = MsdOdata::Entity.new('LedgerJournalHeaders') }
+
+    it 'uses custom param to add one param' do
+      @entity.custom_param('cross-company=true')
+      expect(@entity.query[:custom_param]).to eq('cross-company=true')
+    end
+  end
+
   describe '.where' do
     before(:each) { @entity = MsdOdata::Entity.new('ProductReceiptLines') }
 
