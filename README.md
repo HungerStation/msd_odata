@@ -167,6 +167,9 @@ entity.order_by('CustomerAccount')
 
 # Skip a number of records in the result set.
 entity.skip(100)
+
+# Add a custom param to the url.
+entity.custom_param('cross-company=true')
 ```
 And finally when you finish building the query, pass the `entity` object to a `service` object, and call `read` action.
 ```ruby
